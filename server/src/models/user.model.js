@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const Account = require('./account.model');
 
 const userScheme = new mongoose.Schema({
     username:{
@@ -23,6 +24,16 @@ const userScheme = new mongoose.Schema({
         min: [0, 'The age cannot be less than 0'],
         max: [150, 'The age cannot be more than 150'],
     },
+});
+
+userScheme.post('findOneAndDelete', async (doc) => {
+    try {
+        if (doc) {
+            await Account.deleteOne({ user: doc._id });
+        }
+    } catch (error) {
+        console.error(error);
+    }
 });
 
 const User = mongoose.model('User', userScheme);
