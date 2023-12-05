@@ -4,13 +4,14 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 
 // Routes
-const userRoutes = require('./routes/user.routes'); 
+const userRoutes = require('./src/routes/user.routes'); 
 
 const app = express();
 const PORT = process.env.PORT || 7777;
-const URL = '';
+const URL = 'mongodb+srv://Kaxxa:Kaxxa123@cluster0.hzryrjr.mongodb.net/AutoParking?retryWrites=true&w=majority';
 
 app.use(bodyParser.json());
+app.use(express.urlencoded({ extended: true }));
 app.use(cors());
 
 // Connect to DB
