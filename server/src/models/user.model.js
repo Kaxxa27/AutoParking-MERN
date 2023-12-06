@@ -4,9 +4,7 @@ const Account = require('./account.model');
 const userScheme = new mongoose.Schema({
     username:{
         type: String,
-        required: [true, 'Username is required'],
-        unique: true,
-        minlength: [2, 'Username cannot be shorter than 2 characters'],
+        minlength: [1, 'Username cannot be shorter than 1 characters'],
         maxlength: [45, 'Username cannot be longer than 45 characters'],
         trim: true,
     },
@@ -15,9 +13,12 @@ const userScheme = new mongoose.Schema({
         required: true,
         minlength: [3, 'The password cannot be shorter than 3 characters'],
     },
-    name:{
+    email: {
         type: String,
+        required: [true, 'Email is required'],
+        unique: true,
         trim: true,
+        match: [/\S+@\S+\.\S+/, 'Invalid email format'],
     },
     age:{
         type: Number,

@@ -1,7 +1,9 @@
+require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const cors = require('cors');
+const cookieParser = require('cookie-parser');
 
 // Routes
 const userRoutes = require('./src/routes/user.routes'); 
@@ -12,14 +14,14 @@ const parkingSpotRoutes = require('./src/routes/parkingspot.routes');
 
 const app = express();
 const PORT = process.env.PORT || 7777;
-const URL = 'mongodb+srv://Kaxxa:Kaxxa123@cluster0.hzryrjr.mongodb.net/AutoParking?retryWrites=true&w=majority';
 
 app.use(bodyParser.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(cookieParser());
 app.use(cors());
 
 // Connect to DB
-mongoose.connect(URL, {
+mongoose.connect(process.env.DB_URL, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
 })
