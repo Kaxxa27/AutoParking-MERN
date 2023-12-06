@@ -20,7 +20,7 @@ const GeneralForm = ({form, visible, setVisible}) => {
 
     try {
       await $api.post(`/${form.modelURL}`, formData);
-      navigate('/catalog'); // Измените на соответствующий путь
+      navigate('/'); // Измените на соответствующий путь
     } catch (error) {
       alert(`Введите корректные данные!\n ${error.response.data.message}`);
       console.error(`Error`, error.response.data.message);

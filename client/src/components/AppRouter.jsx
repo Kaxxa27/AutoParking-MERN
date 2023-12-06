@@ -8,13 +8,14 @@ import Catalog from '../pages/Catalog';
 import Registration from './Registration';
 import Login from './Login';
 import Logout from './Logout';
+import ParkingsCatalog from '../pages/Catalogs/ParkingCatalog';
 
 const AppRouter = () => {
   return (
     <Routes>
       <Route path="/" exact element={<Home />} />
       <Route path="/about" element={<About />} />
-      <Route path="/parking-catalog" element={<Catalog />} />
+      <Route path="/parking-catalog" element={<ParkingsCatalog />} />
       <Route path="/privacy-policy" element={<PrivacyPolicy />} />
       <Route path="/registration" element={<Registration />} />
       <Route path="/login" element={<Login />} />
