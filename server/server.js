@@ -11,6 +11,7 @@ const carRoutes = require('./src/routes/car.routes');
 const accountRoutes = require('./src/routes/account.routes'); 
 const paymentRoutes = require('./src/routes/payment.routes'); 
 const parkingSpotRoutes = require('./src/routes/parkingspot.routes'); 
+const authorizeRoutes = require('./src/routes/authorize.routes'); 
 
 const app = express();
 const PORT = process.env.PORT || 7777;
@@ -34,6 +35,7 @@ app.use('/api/cars', carRoutes);
 app.use('/api/payments', paymentRoutes); 
 app.use('/api/accounts', accountRoutes); 
 app.use('/api/parkingspots', parkingSpotRoutes); 
+app.use('/api/auth', authorizeRoutes); 
 
 // Start server 
 app.listen(PORT, () => {
