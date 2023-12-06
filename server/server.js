@@ -19,7 +19,10 @@ const PORT = process.env.PORT || 7777;
 app.use(bodyParser.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
-app.use(cors());
+app.use(cors({
+    credentials: true,
+    origin: process.env.CLIENT_URL
+}));
 
 // Connect to DB
 mongoose.connect(process.env.DB_URL, {
