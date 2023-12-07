@@ -4,6 +4,8 @@ import AuthContext from '../../context/authcontext';
 import CreateParkingForm from '../../components/UI/Forms/ParkingForm/CreateParkingForm';
 import UpdateParkingForm from '../../components/UI/Forms/ParkingForm/UpdateParkingForm';
 
+import cl from '../../styles/Catalogs/Catalog.module.css';
+
 const ParkingCatalogs = () => {
     const { isAuth } = useContext(AuthContext);
     const [isCreateModalOpen, setisCreateModalOpen] = useState(false);
@@ -57,30 +59,21 @@ const ParkingCatalogs = () => {
     };
 
     return (
-        <div>
+        <div className={cl.mainContainer}>
             <h1>Parking Catalog</h1>
-            {parkingSpots.map((spot) => (
-                <div key={spot._id}>
-                    <p>Number: {spot.number}</p>
-                    <p>Price: {spot.price}</p>
-                    <button onClick={() => editParkingSpot(spot)}>Edit</button>
-                    <button onClick={() => deleteParkingSpot(spot._id)}>Delete</button>
-                </div>
-            ))}
-
             {isAuth && (
                 <>
                     <button onClick={() => setisCreateModalOpen(true)}>Добавить новую парковку</button>
                     {isCreateModalOpen && (
-                        <CreateParkingForm 
-                            visible={isCreateModalOpen} 
-                            loadParkingSpots = {() => loadParkingSpots()} 
-                            setVisible={setisCreateModalOpen} 
+                        <CreateParkingForm
+                            visible={isCreateModalOpen}
+                            loadParkingSpots={() => loadParkingSpots()}
+                            setVisible={setisCreateModalOpen}
                         />
                     )}
                     {selectedParkingSpot && (
                         <UpdateParkingForm
-                            loadParkingSpots = {() => loadParkingSpots()} 
+                            loadParkingSpots={() => loadParkingSpots()}
                             parkingSpot={selectedParkingSpot}
                             visible={isUpdateModalOpen}
                             setVisible={setisUpdateModalOpen}
@@ -88,6 +81,16 @@ const ParkingCatalogs = () => {
                     )}
                 </>
             )}
+            {parkingSpots.map((spot) => (
+                <div key={spot._id} className={cl.Block}>
+                    <div className={cl.infoBlock}>
+                        <div>Number: {spot.number}</div>
+                        <div>Price: {spot.price}</div>
+                    </div>
+                    <button onClick={() => editParkingSpot(spot)}>Edit</button>
+                    <button onClick={() => deleteParkingSpot(spot._id)}>Delete</button>
+                </div>
+            ))}
         </div>
     );
 };
