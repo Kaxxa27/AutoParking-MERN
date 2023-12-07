@@ -9,6 +9,7 @@ import Login from './Login';
 import Logout from './Logout';
 import ParkingCatalog from '../pages/Catalogs/ParkingCatalog';
 import UserCatalog from '../pages/Catalogs/UserCatalog';
+import CarCatalog from '../pages/Catalogs/CarCatalog';
 
 const AppRouter = () => {
   return (
@@ -17,6 +18,7 @@ const AppRouter = () => {
       <Route path="/about" element={<About />} />
       <Route path="/parking-catalog" element={<ParkingCatalog />} />
       <Route path="/users-catalog" element={<UserCatalog />} />
+      <Route path="/cars-catalog" element={<CarCatalog />} />
       <Route path="/privacy-policy" element={<PrivacyPolicy />} />
       <Route path="/registration" element={<Registration />} />
       <Route path="/login" element={<Login />} />
