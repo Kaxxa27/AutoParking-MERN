@@ -9,6 +9,7 @@ import Registration from './Registration';
 import Login from './Login';
 import Logout from './Logout';
 import ParkingsCatalog from '../pages/Catalogs/ParkingCatalog';
+import UsersCatalog from '../pages/Catalogs/UserCatalog';
 
 const AppRouter = () => {
   return (
@@ -16,6 +17,7 @@ const AppRouter = () => {
       <Route path="/" exact element={<Home />} />
       <Route path="/about" element={<About />} />
       <Route path="/parking-catalog" element={<ParkingsCatalog />} />
+      <Route path="/users-catalog" element={<UsersCatalog />} />
       <Route path="/privacy-policy" element={<PrivacyPolicy />} />
       <Route path="/registration" element={<Registration />} />
       <Route path="/login" element={<Login />} />
