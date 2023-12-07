@@ -1,6 +1,6 @@
 import React, { useContext, useState } from 'react';
 import AuthContext from '../../../../context/authcontext';
-import CreateParkingForm from '../../../CreateParkingForm';
+import CreateParkingForm from '../../Forms/ParkingForm/CreateParkingForm';
 import $api from '../../../../http/index';
 
 const ParkingTable = ({ parkings }) => {
@@ -16,9 +16,6 @@ const ParkingTable = ({ parkings }) => {
   const handleDelete = async (parkingId) => {
     try {
       await $api.delete(`/parkingspots/${parkingId}`);
-      // Обновляем данные после удаления
-      // Можете использовать ваш механизм для загрузки данных снова
-      // Например, вызвать функцию, которая загружает данные из API и обновляет состояние
     } catch (error) {
       console.error('Ошибка при удалении парковки:', error.response.data.message);
     }

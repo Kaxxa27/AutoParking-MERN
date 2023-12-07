@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import MyModal from './UI/MyModal/MyModal';
-import $api from '../http/index'
+import MyModal from '../../MyModal/MyModal';
+import $api from '../../../../http/index'
 import { useNavigate } from 'react-router-dom';
 
 const UpdateParkingForm = ({ parkingSpot, visible, setVisible, loadParkingSpots }) => {

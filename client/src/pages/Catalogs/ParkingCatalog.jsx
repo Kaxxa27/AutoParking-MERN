@@ -1,41 +1,95 @@
-import React, { useContext, useEffect, useState } from 'react';
-import AuthContext from '../../context/authcontext';
-import ParkingTable from '../../components/ParkingTable';
-import CreateParkingForm from '../../components/CreateParkingForm';
+import React, { useState, useEffect, useContext } from 'react';
 import $api from '../../http/index';
+import AuthContext from '../../context/authcontext';
+import CreateParkingForm from '../../components/UI/Forms/ParkingForm/CreateParkingForm';
+import UpdateParkingForm from '../../components/UI/Forms/ParkingForm/UpdateParkingForm';
 
-const ParkingCatalog = () => {
+const ParkingCatalogs = () => {
     const { isAuth } = useContext(AuthContext);
-    const [parkings, setParkings] = useState([]);
-    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [isCreateModalOpen, setisCreateModalOpen] = useState(false);
+    const [isUpdateModalOpen, setisUpdateModalOpen] = useState(false);
+    const [selectedParkingSpot, setSelectedParkingSpot] = useState(null);  // Добавлено состояние
+
+    const [parkingSpots, setParkingSpots] = useState([]);
+    const [newParkingSpot, setNewParkingSpot] = useState({
+        number: '',
+        price: '',
+    });
 
     useEffect(() => {
-        const fetchParkings = async () => {
-            try {
-                const response = await $api.get('/parkingspots');
-                setParkings(response.data);
-            } catch (error) {
-                console.error('Ошибка при загрузке парковок:', error.response.data.message);
-            }
-        };
-    
-        fetchParkings();
-    })
+        loadParkingSpots();
+    }, []);
+
+    const loadParkingSpots = async () => {
+        try {
+            const response = await $api.get('/parkingSpots');
+            setParkingSpots(response.data);
+        } catch (error) {
+            console.error('Error loading parking spots:', error);
+        }
+    };
+
+    const createParkingSpot = async () => {
+        try {
+            const response = await $api.post('/parkingSpots', newParkingSpot);
+            setParkingSpots([...parkingSpots, response.data]);
+            setNewParkingSpot({
+                number: '',
+                price: '',
+            });
+        } catch (error) {
+            console.error('Error creating parking spot:', error);
+        }
+    };
+
+    const deleteParkingSpot = async (id) => {
+        try {
+            await $api.delete(`/parkingSpots/${id}`);
+            setParkingSpots(parkingSpots.filter((spot) => spot._id !== id));
+        } catch (error) {
+            console.error('Error deleting parking spot:', error);
+        }
+    };
+
+    const editParkingSpot = (spot) => {
+        setSelectedParkingSpot(spot);
+        setisUpdateModalOpen(true);
+    };
 
     return (
         <div>
-            <h1>Каталог парковок</h1>
+            <h1>Parking Catalog</h1>
+            {parkingSpots.map((spot) => (
+                <div key={spot._id}>
+                    <p>Number: {spot.number}</p>
+                    <p>Price: {spot.price}</p>
+                    <button onClick={() => editParkingSpot(spot)}>Edit</button>
+                    <button onClick={() => deleteParkingSpot(spot._id)}>Delete</button>
+                </div>
+            ))}
+
             {isAuth && (
                 <>
-                    <button onClick={() => setIsModalOpen(true)}>Добавить новую парковку</button>
-                    {isModalOpen && (
-                        <CreateParkingForm visible={isModalOpen} setVisible={setIsModalOpen} />
+                    <button onClick={() => setisCreateModalOpen(true)}>Добавить новую парковку</button>
+                    {isCreateModalOpen && (
+                        <CreateParkingForm 
+                            visible={isCreateModalOpen} 
+                            loadParkingSpots = {() => loadParkingSpots()} 
+                            setVisible={setisCreateModalOpen} 
+                        />
+                    )}
+                    {selectedParkingSpot && (
+                        <UpdateParkingForm
+                            loadParkingSpots = {() => loadParkingSpots()} 
+                            parkingSpot={selectedParkingSpot}
+                            visible={isUpdateModalOpen}
+                            setVisible={setisUpdateModalOpen}
+                        />
                     )}
                 </>
             )}
-            <ParkingTable parkings={parkings} />
         </div>
     );
-}
+};
 
-export default ParkingCatalog;
+export default ParkingCatalogs;
