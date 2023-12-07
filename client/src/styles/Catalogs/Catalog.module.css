@@ -22,17 +22,3 @@
     font-size: 20px;
     font-weight: bold;
 }
-
-.info {
-    margin: 8px 0;
-}
-
-.button {
-    background-color: #007BFF;
-    color: #fff;
-    border: none;
-    padding: 8px 16px;
-    margin: 4px;
-    border-radius: 4px;
-    cursor: pointer;
-}

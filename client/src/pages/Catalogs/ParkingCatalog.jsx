@@ -3,6 +3,7 @@ import $api from '../../http/index';
 import AuthContext from '../../context/authcontext';
 import CreateParkingForm from '../../components/UI/Forms/ParkingForm/CreateParkingForm';
 import UpdateParkingForm from '../../components/UI/Forms/ParkingForm/UpdateParkingForm';
+import Select from 'react-select';
 
 import cl from '../../styles/Catalogs/Catalog.module.css';
 
@@ -13,23 +14,43 @@ const ParkingCatalogs = () => {
     const [selectedParkingSpot, setSelectedParkingSpot] = useState(null);
 
     const [parkingSpots, setParkingSpots] = useState([]);
-    const [newParkingSpot, setNewParkingSpot] = useState({
-        number: '',
-        price: '',
-    });
+
+    const [searchText, setSearchText] = useState(''); // Текст поиска
 
     useEffect(() => {
-        loadParkingSpots();
-    }, []);
+        loadParkingSpots(selectedOption);
+    }, [searchText]);
 
-    const loadParkingSpots = async () => {
+
+    const [selectedOption, setSelectedOption] = useState(null);
+
+    const options = [
+        { value: '', label: 'Все' },
+        { value: 'number', label: 'Номеру' },
+        { value: 'price', label: 'Цене' },
+    ];
+
+    const handleChange = (selectedOption) => {
+        setSelectedOption(selectedOption);
+        loadParkingSpots(selectedOption?.value); // Pass the selected sort field to loadParkingSpots
+    };
+
+    const loadParkingSpots = async (sortField) => {
         try {
             const response = await $api.get('/parkingSpots');
-            setParkingSpots(response.data);
+            // Применяем сортировку и фильтрацию на клиенте
+            let filteredSpots = response.data;
+            if (sortField) {
+                filteredSpots = filteredSpots.sort((a, b) => a[sortField] - b[sortField]);
+            }
+            if (searchText !== '') {
+                filteredSpots = filteredSpots.filter(spot => spot.number.toString().includes(searchText));
+            }
+            setParkingSpots(filteredSpots);
         } catch (error) {
             console.error('Error loading parking spots:', error);
         }
-    };
+    }
 
     const deleteParkingSpot = async (id) => {
         try {
@@ -48,6 +69,26 @@ const ParkingCatalogs = () => {
     return (
         <div className={cl.mainContainer}>
             <h1>Parking Catalog</h1>
+
+            <div>
+                <Select
+                        value={selectedOption}
+                        onChange={handleChange}
+                        options={options}
+                        placeholder="Выберите поле"
+                    />
+            </div>
+            <br/>
+            <br/>
+            <input
+                type="text"
+                value={searchText}
+                onChange={(e) => setSearchText(e.target.value)}
+                placeholder="Поиск"
+                className={cl.searchInput}
+            />
+            <br/>
+
             {isAuth && (
                 <>
                     <button onClick={() => setisCreateModalOpen(true)}>Добавить новую парковку</button>
