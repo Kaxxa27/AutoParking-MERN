@@ -44,7 +44,7 @@ const UserCatalog = () => {
                 filteredSpots = filteredSpots.sort((a, b) => a[sortField] - b[sortField]);
             }
             if (searchText !== '') {
-                filteredSpots = filteredSpots.filter(car => car.username.toString().includes(searchText));
+                filteredSpots = filteredSpots.filter(user => user.username.toString().includes(searchText));
             }
             setUsers(filteredSpots);
         } catch (error) {

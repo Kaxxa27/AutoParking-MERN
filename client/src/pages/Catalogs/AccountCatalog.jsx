@@ -3,6 +3,7 @@ import $api from '../../http/index';
 import AuthContext from '../../context/authcontext';
 import CreateAccountForm from '../../components/UI/Forms/AccountForm/CreateAccountForm';
 import UpdateAccountForm from '../../components/UI/Forms/AccountForm/UpdateAccountForm';
+import Select from 'react-select';
 
 import cl from '../../styles/Catalogs/Catalog.module.css';
 
@@ -13,18 +14,37 @@ const AccountCatalog = () => {
     const [selectedAccounts, setselectedAccounts] = useState(null);
 
     const [Accounts, setAccounts] = useState([]);
-    const [newAccount, setNewAccount] = useState({
-        amount: 0
-    });
+
+    const [searchText, setSearchText] = useState('');
 
     useEffect(() => {
-        loadAccounts();
-    }, []);
+        loadAccounts(selectedOption);
+    }, [searchText]);
 
-    const loadAccounts = async () => {
+    const [selectedOption, setSelectedOption] = useState(null);
+
+    const options = [
+        { value: '', label: 'Все' },
+        { value: 'amount', label: 'Кол-ву денег' },
+    ];
+
+    const handleChange = (selectedOption) => {
+        setSelectedOption(selectedOption);
+        loadAccounts(selectedOption?.value);
+    };
+
+    const loadAccounts = async (sortField) => {
         try {
             const response = await $api.get('/accounts');
-            setAccounts(response.data);
+
+            let filteredSpots = response.data;
+            if (sortField) {
+                filteredSpots = filteredSpots.sort((a, b) => a[sortField] - b[sortField]);
+            }
+            if (searchText !== '') {
+                filteredSpots = filteredSpots.filter(account => account.amount.toString().includes(searchText));
+            }
+            setAccounts(filteredSpots);
         } catch (error) {
             console.error('Error loading parking Accounts:', error);
         }
@@ -47,6 +67,25 @@ const AccountCatalog = () => {
     return (
         <div className={cl.mainContainer}>
             <h1>Accounts Catalog</h1>
+            <div>
+                <Select
+                        value={selectedOption}
+                        onChange={handleChange}
+                        options={options}
+                        placeholder="Выберите поле"
+                    />
+            </div>
+            <br/>
+            <br/>
+            <input
+                type="text"
+                value={searchText}
+                onChange={(e) => setSearchText(e.target.value)}
+                placeholder="Поиск по счету"
+                className={cl.searchInput}
+            />
+            <br/>
+
             {isAuth && (
                 <>
                     <button onClick={() => setisCreateModalOpen(true)}>Добавить счет</button>

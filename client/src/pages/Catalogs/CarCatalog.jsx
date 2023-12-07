@@ -44,7 +44,7 @@ const CarCatalog = () => {
                 filteredSpots = filteredSpots.sort((a, b) => a[sortField] - b[sortField]);
             }
             if (searchText !== '') {
-                filteredSpots = filteredSpots.filter(spot => spot.license_plate.toString().includes(searchText));
+                filteredSpots = filteredSpots.filter(car => car.license_plate.toString().includes(searchText));
             }
             setCars(filteredSpots);
         } catch (error) {
