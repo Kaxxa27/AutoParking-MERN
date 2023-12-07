@@ -11,6 +11,7 @@ const Navbar = () => {
         <li><Link to="/parking-catalog">Каталог парковок</Link></li>
         <li><Link to="/users-catalog">Каталог пользователей</Link></li>
         <li><Link to="/cars-catalog">Каталог машин</Link></li>
+        <li><Link to="/accounts-catalog">Счета</Link></li>
         <li><Link to="/about">О нас</Link></li>
         <li><Link to="/privacy-policy">Политика Конфиденциальности</Link></li>
         {!isAuth && 
