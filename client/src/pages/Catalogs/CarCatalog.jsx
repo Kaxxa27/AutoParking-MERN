@@ -3,6 +3,7 @@ import $api from '../../http/index';
 import AuthContext from '../../context/authcontext';
 import CreateCarForm from '../../components/UI/Forms/CarForm/CreateCarForm';
 import UpdateCarForm from '../../components/UI/Forms/CarForm/UpdateCarForm';
+import Select from 'react-select';
 
 import cl from '../../styles/Catalogs/Catalog.module.css';
 
@@ -13,20 +14,39 @@ const CarCatalog = () => {
     const [selectedCars, setselectedCars] = useState(null);
 
     const [Cars, setCars] = useState([]);
-    const [newCar, setNewCar] = useState({
-        model: '',
-        mark: '',
-        license_plate: ''
-    });
+
+    const [searchText, setSearchText] = useState('');
 
     useEffect(() => {
-        loadCars();
-    }, []);
+        loadCars(selectedOption);
+    }, [searchText]);
 
-    const loadCars = async () => {
+    const [selectedOption, setSelectedOption] = useState(null);
+
+    const options = [
+        { value: '', label: 'Все' },
+        { value: 'model', label: 'Модели' },
+        { value: 'mark', label: 'Марка' },
+        { value: 'license_plate', label: 'Номер' },
+    ];
+
+    const handleChange = (selectedOption) => {
+        setSelectedOption(selectedOption);
+        loadCars(selectedOption?.value);
+    };
+
+    const loadCars = async (sortField) => {
         try {
             const response = await $api.get('/cars');
-            setCars(response.data);
+            
+            let filteredSpots = response.data;
+            if (sortField) {
+                filteredSpots = filteredSpots.sort((a, b) => a[sortField] - b[sortField]);
+            }
+            if (searchText !== '') {
+                filteredSpots = filteredSpots.filter(spot => spot.license_plate.toString().includes(searchText));
+            }
+            setCars(filteredSpots);
         } catch (error) {
             console.error('Error loading parking Cars:', error);
         }
@@ -49,6 +69,25 @@ const CarCatalog = () => {
     return (
         <div className={cl.mainContainer}>
             <h1>Cars Catalog</h1>
+            <div>
+                <Select
+                        value={selectedOption}
+                        onChange={handleChange}
+                        options={options}
+                        placeholder="Выберите поле"
+                    />
+            </div>
+            <br/>
+            <br/>
+            <input
+                type="text"
+                value={searchText}
+                onChange={(e) => setSearchText(e.target.value)}
+                placeholder="Поиск по номеру"
+                className={cl.searchInput}
+            />
+            <br/>
+
             {isAuth && (
                 <>
                     <button onClick={() => setisCreateModalOpen(true)}>Добавить машину</button>

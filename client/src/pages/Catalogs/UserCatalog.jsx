@@ -83,7 +83,7 @@ const UserCatalog = () => {
                 type="text"
                 value={searchText}
                 onChange={(e) => setSearchText(e.target.value)}
-                placeholder="Поиск"
+                placeholder="Поиск по имени"
                 className={cl.searchInput}
             />
             <br/>

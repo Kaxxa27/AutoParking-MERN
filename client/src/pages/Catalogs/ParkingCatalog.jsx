@@ -83,7 +83,7 @@ const ParkingCatalogs = () => {
                 type="text"
                 value={searchText}
                 onChange={(e) => setSearchText(e.target.value)}
-                placeholder="Поиск"
+                placeholder="Поиск по номеру"
                 className={cl.searchInput}
             />
             <br/>
