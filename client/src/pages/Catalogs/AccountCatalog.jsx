@@ -10,7 +10,7 @@ const AccountCatalog = () => {
     const { isAuth } = useContext(AuthContext);
     const [isCreateModalOpen, setisCreateModalOpen] = useState(false);
     const [isUpdateModalOpen, setisUpdateModalOpen] = useState(false);
-    const [selectedAccounts, setselectedAccounts] = useState(null); 
+    const [selectedAccounts, setselectedAccounts] = useState(null);
 
     const [Accounts, setAccounts] = useState([]);
     const [newAccount, setNewAccount] = useState({
@@ -27,19 +27,6 @@ const AccountCatalog = () => {
             setAccounts(response.data);
         } catch (error) {
             console.error('Error loading parking Accounts:', error);
-        }
-    };
-
-    const createParkingAccount = async () => {
-        try {
-            const response = await $api.post('/accounts', newAccount);
-            setAccounts([...Accounts, response.data]);
-            setNewAccount({
-                number: '',
-                price: '',
-            });
-        } catch (error) {
-            console.error('Error creating parking Account:', error);
         }
     };
 
@@ -85,8 +72,12 @@ const AccountCatalog = () => {
                     <div className={cl.infoBlock}>
                         <div>Amount: {Account.amount}</div>
                     </div>
-                    <button onClick={() => editAccount(Account)}>Edit</button>
-                    <button onClick={() => deleteAccount(Account._id)}>Delete</button>
+                    {isAuth &&
+                        <div>
+                            <button onClick={() => editAccount(Account)}>Edit</button>
+                            <button onClick={() => deleteAccount(Account._id)}>Delete</button>
+                        </div>
+                    }
                 </div>
             ))}
         </div>

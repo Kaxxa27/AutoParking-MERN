@@ -10,7 +10,7 @@ const ParkingCatalogs = () => {
     const { isAuth } = useContext(AuthContext);
     const [isCreateModalOpen, setisCreateModalOpen] = useState(false);
     const [isUpdateModalOpen, setisUpdateModalOpen] = useState(false);
-    const [selectedParkingSpot, setSelectedParkingSpot] = useState(null); 
+    const [selectedParkingSpot, setSelectedParkingSpot] = useState(null);
 
     const [parkingSpots, setParkingSpots] = useState([]);
     const [newParkingSpot, setNewParkingSpot] = useState({
@@ -28,19 +28,6 @@ const ParkingCatalogs = () => {
             setParkingSpots(response.data);
         } catch (error) {
             console.error('Error loading parking spots:', error);
-        }
-    };
-
-    const createParkingSpot = async () => {
-        try {
-            const response = await $api.post('/parkingSpots', newParkingSpot);
-            setParkingSpots([...parkingSpots, response.data]);
-            setNewParkingSpot({
-                number: '',
-                price: '',
-            });
-        } catch (error) {
-            console.error('Error creating parking spot:', error);
         }
     };
 
@@ -87,8 +74,12 @@ const ParkingCatalogs = () => {
                         <div>Number: {spot.number}</div>
                         <div>Price: {spot.price}</div>
                     </div>
-                    <button onClick={() => editParkingSpot(spot)}>Edit</button>
-                    <button onClick={() => deleteParkingSpot(spot._id)}>Delete</button>
+                    {isAuth &&
+                        <div>
+                            <button onClick={() => editParkingSpot(spot)}>Edit</button>
+                            <button onClick={() => deleteParkingSpot(spot._id)}>Delete</button>
+                        </div>
+                    }
                 </div>
             ))}
         </div>

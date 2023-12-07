@@ -10,7 +10,7 @@ const CarCatalog = () => {
     const { isAuth } = useContext(AuthContext);
     const [isCreateModalOpen, setisCreateModalOpen] = useState(false);
     const [isUpdateModalOpen, setisUpdateModalOpen] = useState(false);
-    const [selectedCars, setselectedCars] = useState(null); 
+    const [selectedCars, setselectedCars] = useState(null);
 
     const [Cars, setCars] = useState([]);
     const [newCar, setNewCar] = useState({
@@ -29,19 +29,6 @@ const CarCatalog = () => {
             setCars(response.data);
         } catch (error) {
             console.error('Error loading parking Cars:', error);
-        }
-    };
-
-    const createParkingCar = async () => {
-        try {
-            const response = await $api.post('/Cars', newCar);
-            setCars([...Cars, response.data]);
-            setNewCar({
-                number: '',
-                price: '',
-            });
-        } catch (error) {
-            console.error('Error creating parking Car:', error);
         }
     };
 
@@ -89,8 +76,12 @@ const CarCatalog = () => {
                         <div>Mark: {Car.mark}</div>
                         <div>License Plat: {Car.license_plate}</div>
                     </div>
-                    <button onClick={() => editCar(Car)}>Edit</button>
-                    <button onClick={() => deleteCar(Car._id)}>Delete</button>
+                    {isAuth &&
+                        <div>
+                            <button onClick={() => editCar(Car)}>Edit</button>
+                            <button onClick={() => deleteCar(Car._id)}>Delete</button>
+                        </div>
+                    }
                 </div>
             ))}
         </div>

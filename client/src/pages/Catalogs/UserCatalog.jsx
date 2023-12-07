@@ -10,7 +10,7 @@ const UserCatalog = () => {
     const { isAuth } = useContext(AuthContext);
     const [isCreateModalOpen, setisCreateModalOpen] = useState(false);
     const [isUpdateModalOpen, setisUpdateModalOpen] = useState(false);
-    const [selectedUsers, setselectedUsers] = useState(null); 
+    const [selectedUsers, setselectedUsers] = useState(null);
 
     const [Users, setUsers] = useState([]);
     const [newUser, setNewUser] = useState({
@@ -28,19 +28,6 @@ const UserCatalog = () => {
             setUsers(response.data);
         } catch (error) {
             console.error('Error loading parking users:', error);
-        }
-    };
-
-    const createParkinguser = async () => {
-        try {
-            const response = await $api.post('/users', newUser);
-            setUsers([...Users, response.data]);
-            setNewUser({
-                number: '',
-                price: '',
-            });
-        } catch (error) {
-            console.error('Error creating parking user:', error);
         }
     };
 
@@ -89,8 +76,12 @@ const UserCatalog = () => {
                         <div>Password: {user.password}</div>
                         <div>Age: {user.age}</div>
                     </div>
-                    <button onClick={() => editUser(user)}>Edit</button>
-                    <button onClick={() => deleteUser(user._id)}>Delete</button>
+                    {isAuth &&
+                        <div>
+                            <button onClick={() => editUser(user)}>Edit</button>
+                            <button onClick={() => deleteUser(user._id)}>Delete</button>
+                        </div>
+                    }
                 </div>
             ))}
         </div>
