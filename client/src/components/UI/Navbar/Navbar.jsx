@@ -9,7 +9,6 @@ const Navbar = () => {
       <ul>
         <li><Link to="/">Главная</Link></li>
         <li><Link to="/parking-catalog">Каталог парковок</Link></li>
-        {/* <li><Link to="/new-parking-catalog">НОВЫЙ КАТАЛОГ ПАРКОВОК</Link></li> */}
         <li><Link to="/users-catalog">Каталог пользователей</Link></li>
         <li><Link to="/about">О нас</Link></li>
         <li><Link to="/privacy-policy">Политика Конфиденциальности</Link></li>

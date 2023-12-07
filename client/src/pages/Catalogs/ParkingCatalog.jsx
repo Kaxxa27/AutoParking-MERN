@@ -10,7 +10,7 @@ const ParkingCatalogs = () => {
     const { isAuth } = useContext(AuthContext);
     const [isCreateModalOpen, setisCreateModalOpen] = useState(false);
     const [isUpdateModalOpen, setisUpdateModalOpen] = useState(false);
-    const [selectedParkingSpot, setSelectedParkingSpot] = useState(null);  // Добавлено состояние
+    const [selectedParkingSpot, setSelectedParkingSpot] = useState(null); 
 
     const [parkingSpots, setParkingSpots] = useState([]);
     const [newParkingSpot, setNewParkingSpot] = useState({

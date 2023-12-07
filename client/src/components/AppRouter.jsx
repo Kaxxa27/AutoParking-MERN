@@ -8,15 +8,15 @@ import Registration from './Registration';
 import Login from './Login';
 import Logout from './Logout';
 import ParkingCatalog from '../pages/Catalogs/ParkingCatalog';
+import UserCatalog from '../pages/Catalogs/UserCatalog';
 
 const AppRouter = () => {
   return (
     <Routes>
       <Route path="/" exact element={<Home />} />
       <Route path="/about" element={<About />} />
-      {/* <Route path="/parking-catalog" element={<ParkingCatalog />} /> */}
       <Route path="/parking-catalog" element={<ParkingCatalog />} />
-      {/* <Route path="/users-catalog" element={<UsersCatalog />} /> */}
+      <Route path="/users-catalog" element={<UserCatalog />} />
       <Route path="/privacy-policy" element={<PrivacyPolicy />} />
       <Route path="/registration" element={<Registration />} />
       <Route path="/login" element={<Login />} />
