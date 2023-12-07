@@ -15,8 +15,8 @@ const ParkingCatalogs = () => {
 
     const [parkingSpots, setParkingSpots] = useState([]);
 
-    const [searchText, setSearchText] = useState(''); // Текст поиска
-
+    const [searchText, setSearchText] = useState('');
+    
     useEffect(() => {
         loadParkingSpots(selectedOption);
     }, [searchText]);
@@ -32,13 +32,12 @@ const ParkingCatalogs = () => {
 
     const handleChange = (selectedOption) => {
         setSelectedOption(selectedOption);
-        loadParkingSpots(selectedOption?.value); // Pass the selected sort field to loadParkingSpots
+        loadParkingSpots(selectedOption?.value);
     };
 
     const loadParkingSpots = async (sortField) => {
         try {
             const response = await $api.get('/parkingSpots');
-            // Применяем сортировку и фильтрацию на клиенте
             let filteredSpots = response.data;
             if (sortField) {
                 filteredSpots = filteredSpots.sort((a, b) => a[sortField] - b[sortField]);

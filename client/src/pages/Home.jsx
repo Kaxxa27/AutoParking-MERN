@@ -8,13 +8,6 @@ const Home = () => {
             <div>
                 Главная страница
             </div>
-            <div>
-                <Select>
-                    <option value="number">Номеру</option>
-                    <option value="price">Цене</option>
-                </Select>
-            </div>
-
         </div>
 
     )

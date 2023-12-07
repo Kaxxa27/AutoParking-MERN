@@ -3,6 +3,7 @@ import $api from '../../http/index';
 import AuthContext from '../../context/authcontext';
 import CreateUserForm from '../../components/UI/Forms/UserForm/CreateUserForm';
 import UpdateUserForm from '../../components/UI/Forms/UserForm/UpdateUserForm';
+import Select from 'react-select';
 
 import cl from '../../styles/Catalogs/Catalog.module.css';
 
@@ -13,19 +14,39 @@ const UserCatalog = () => {
     const [selectedUsers, setselectedUsers] = useState(null);
 
     const [Users, setUsers] = useState([]);
-    const [newUser, setNewUser] = useState({
-        number: '',
-        price: '',
-    });
+
+    const [searchText, setSearchText] = useState('');
 
     useEffect(() => {
-        loadUsers();
-    }, []);
+        loadUsers(selectedOption);
+    }, [searchText]);
 
-    const loadUsers = async () => {
+    const [selectedOption, setSelectedOption] = useState(null);
+
+    const options = [
+        { value: '', label: 'Все' },
+        { value: 'username', label: 'Имени' },
+        { value: 'age', label: 'Возрасту' },
+    ];
+
+    const handleChange = (selectedOption) => {
+        setSelectedOption(selectedOption);
+        loadUsers(selectedOption?.value);
+    };
+
+
+    const loadUsers = async (sortField) => {
         try {
             const response = await $api.get('/users');
-            setUsers(response.data);
+
+            let filteredSpots = response.data;
+            if (sortField) {
+                filteredSpots = filteredSpots.sort((a, b) => a[sortField] - b[sortField]);
+            }
+            if (searchText !== '') {
+                filteredSpots = filteredSpots.filter(car => car.username.toString().includes(searchText));
+            }
+            setUsers(filteredSpots);
         } catch (error) {
             console.error('Error loading parking users:', error);
         }
@@ -48,6 +69,25 @@ const UserCatalog = () => {
     return (
         <div className={cl.mainContainer}>
             <h1>Users Catalog</h1>
+            <div>
+                <Select
+                        value={selectedOption}
+                        onChange={handleChange}
+                        options={options}
+                        placeholder="Выберите поле"
+                    />
+            </div>
+            <br/>
+            <br/>
+            <input
+                type="text"
+                value={searchText}
+                onChange={(e) => setSearchText(e.target.value)}
+                placeholder="Поиск"
+                className={cl.searchInput}
+            />
+            <br/>
+
             {isAuth && (
                 <>
                     <button onClick={() => setisCreateModalOpen(true)}>Добавить нового пользователя</button>
